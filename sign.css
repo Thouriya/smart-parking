@@ -1,0 +1,81 @@
+/* --- Styles de la page Inscription --- */
+
+.signup-container {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #a855f7, #ec4899); /* from-purple-500 to-pink-500 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.signup-card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.logo-box-white {
+    width: 4rem;
+    height: 4rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem auto;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.input-field:focus {
+    ring: 2px;
+    border-color: #a855f7;
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.5);
+}
+
+.btn-signup {
+    width: 100%;
+    background-color: #9333ea; /* purple-600 */
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-signup:hover {
+    background-color: #7e22ce; /* purple-700 */
+}
+
+.advantage-list {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.advantage-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+}
+
+.check-icon {
+    color: #a855f7;
+}

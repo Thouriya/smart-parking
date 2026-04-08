@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="sign.css">
+    <title>SmartParking - Inscription</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .error-message { color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; display: none; }
+        input.border-red-500 { border-color: #ef4444; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex flex-col items-center justify-center p-6 font-sans">
+
+    <div class="text-center mb-6 animate-fade-in">
+        <div class="w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="car" class="w-10 h-10 text-purple-600"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-white mb-1">Créer un compte</h1>
+        <p class="text-purple-100">Rejoignez SmartParking dès maintenant</p>
+    </div>
+
+    <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto">
+        <form id="signup-form" class="space-y-4">
+            
+            <div>
+                <label class="text-sm font-medium text-gray-700">Nom complet</label>
+                <div class="relative mt-1.5">
+                    <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="text" id="name" placeholder="Jean Dupont" 
+                        class="w-full pl-11 pr-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                </div>
+                <p id="error-name" class="error-message">Le nom est requis</p>
+            </div>
+
+            <div>
+                <label class="text-sm font-medium text-gray-700">Email</label>
+                <div class="relative mt-1.5">
+                    <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="email" id="email" placeholder="jean.dupont@email.com" 
+                        class="w-full pl-11 pr-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                </div>
+                <p id="error-email" class="error-message">Email invalide</p>
+            </div>
+
+            <div>
+                <label class="text-sm font-medium text-gray-700">Téléphone</label>
+                <div class="relative mt-1.5">
+                    <i data-lucide="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="tel" id="phone" placeholder="06 12 34 56 78" 
+                        class="w-full pl-11 pr-4 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                </div>
+                <p id="error-phone" class="error-message">Numéro de téléphone invalide</p>
+            </div>
+
+            <div>
+                <label class="text-sm font-medium text-gray-700">Mot de passe</label>
+                <div class="relative mt-1.5">
+                    <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="password" id="password" placeholder="••••••••" 
+                        class="w-full pl-11 pr-11 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                    <button type="button" onclick="togglePass('password', 'eye-1')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <i id="eye-1" data-lucide="eye" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <p id="error-password" class="error-message">Doit contenir 8 caractères, une majuscule et un chiffre</p>
+            </div>
+
+            <div>
+                <label class="text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+                <div class="relative mt-1.5">
+                    <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="password" id="confirmPassword" placeholder="••••••••" 
+                        class="w-full pl-11 pr-11 py-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                    <button type="button" onclick="togglePass('confirmPassword', 'eye-2')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <i id="eye-2" data-lucide="eye" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <p id="error-confirmPassword" class="error-message">Les mots de passe ne correspondent pas</p>
+            </div>
+
+            <div>
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" id="terms" class="w-4 h-4 rounded border-gray-300 mt-0.5">
+                    <span class="text-xs text-gray-600">
+                        J'accepte les <span class="text-purple-600 font-medium">conditions d'utilisation</span> et la 
+                        <span class="text-purple-600 font-medium">politique de confidentialité</span>
+                    </span>
+                </label>
+                <p id="error-terms" class="error-message">Vous devez accepter les conditions</p>
+            </div>
+
+            <button type="submit" class="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-all shadow-lg">
+                Créer mon compte
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Vous avez déjà un compte ? 
+                <a href="login.html" class="text-purple-600 hover:text-purple-700 font-medium">Se connecter</a>
+            </p>
+        </div>
+
+        <div class="mt-6 pt-6 border-t border-gray-100">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">Vos avantages :</p>
+            <ul class="space-y-2">
+                <li class="flex items-center gap-2 text-xs text-gray-600">
+                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div> Réservation en temps réel
+                </li>
+                <li class="flex items-center gap-2 text-xs text-gray-600">
+                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div> Historique & Statistiques
+                </li>
+                <li class="flex items-center gap-2 text-xs text-gray-600">
+                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div> Paiement sécurisé
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function togglePass(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Simple validation logic matching your React code
+            const fields = ['name', 'email', 'phone', 'password', 'confirmPassword'];
+            fields.forEach(f => {
+                const val = document.getElementById(f).value;
+                const err = document.getElementById('error-' + f);
+                const input = document.getElementById(f);
+                
+                if (!val) {
+                    err.style.display = 'block';
+                    input.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    err.style.display = 'none';
+                    input.classList.remove('border-red-500');
+                }
+            });
+
+            // Password Match Check
+            if (isValid && document.getElementById('password').value !== document.getElementById('confirmPassword').value) {
+                document.getElementById('error-confirmPassword').innerText = "Les mots de passe ne correspondent pas";
+                document.getElementById('error-confirmPassword').style.display = 'block';
+                isValid = false;
+            }
+
+            // Terms Check
+            if (!document.getElementById('terms').checked) {
+                document.getElementById('error-terms').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert("Compte créé avec succès !");
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Clear error on type
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                const errorId = 'error-' + input.id;
+                if(document.getElementById(errorId)) {
+                    document.getElementById(errorId).style.display = 'none';
+                    input.classList.remove('border-red-500');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

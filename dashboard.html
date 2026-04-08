@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartParking - Recherche</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        body { background-color: #f3f4f6; }
+        .app-shell { max-width: 450px; margin: 0 auto; height: 100vh; background: white; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        
+        /* Style pour les badges de statut */
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .status-libre { background: #dcfce7; color: #166534; }
+        .status-occupe { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+    <div class="app-shell">
+        <header class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-5 shrink-0 shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-2xl">🚗</div>
+                    <div>
+                        <h1 class="font-bold text-xl">SmartParking</h1>
+                        <p class="text-xs text-blue-100">Recherche de places</p>
+                    </div>
+                </div>
+                <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto px-6 py-6 bg-gray-50">
+            
+            <div id="find" class="tab-content active">
+                <h2 class="text-lg font-bold mb-4 text-gray-800">Trouver une place</h2>
+                
+                <div class="relative mb-6">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="text" id="search-input" oninput="filterPlaces()" 
+                        placeholder="Chercher zone ou numéro (ex: A-01)..." 
+                        class="w-full pl-12 pr-4 py-4 rounded-2xl border-none shadow-md focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                </div>
+
+                <div id="results-list" class="space-y-3">
+                    </div>
+                
+                <div id="no-results" class="hidden text-center py-10">
+                    <i data-lucide="frown" class="w-12 h-12 mx-auto text-gray-300 mb-2"></i>
+                    <p class="text-gray-500">Aucune place trouvée pour cette recherche.</p>
+                </div>
+            </div>
+
+            <div id="map" class="tab-content text-center py-20">Onglet Carte</div>
+            <div id="booking" class="tab-content text-center py-20">Onglet Réservation</div>
+            <div id="stats" class="tab-content text-center py-20">Onglet Stats</div>
+
+        </main>
+
+        <nav class="bg-white border-t px-2 py-2 shrink-0">
+            <div class="flex justify-around">
+                <button onclick="switchTab('map', this)" class="nav-btn flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-500">
+                    <i data-lucide="map" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Carte</span>
+                </button>
+                <button onclick="switchTab('find', this)" class="nav-btn flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-blue-600 bg-blue-50 scale-105">
+                    <i data-lucide="search" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Trouver</span>
+                </button>
+                <button onclick="switchTab('booking', this)" class="nav-btn flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-500">
+                    <i data-lucide="bookmark" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Ma place</span>
+                </button>
+                <button onclick="switchTab('stats', this)" class="nav-btn flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-500">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Stats</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Base de données simulée (Données IL)
+        const allPlaces = [
+            { id: "A-01", status: "Libre", dist: "20m" },
+            { id: "A-05", status: "Occupée", dist: "45m" },
+            { id: "B-03", status: "Libre", dist: "110m" },
+            { id: "B-12", status: "Libre", dist: "135m" },
+            { id: "C-02", status: "Occupée", dist: "200m" },
+            { id: "C-09", status: "Libre", dist: "220m" }
+        ];
+
+        // Fonction pour afficher les places
+        function renderPlaces(list) {
+            const container = document.getElementById('results-list');
+            const noResults = document.getElementById('no-results');
+            
+            if (list.length === 0) {
+                container.innerHTML = "";
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            container.innerHTML = list.map(p => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center border border-gray-100 hover:border-blue-300 transition-all">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center font-bold text-gray-700">
+                            ${p.id.split('-')[0]}
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Place ${p.id}</h3>
+                            <p class="text-xs text-gray-400">À environ ${p.dist}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <span class="status-badge ${p.status === 'Libre' ? 'status-libre' : 'status-occupe'}">
+                            ${p.status}
+                        </span>
+                        ${p.status === 'Libre' ? 
+                            '<button onclick="reserve(\''+p.id+'\')" class="text-xs font-bold text-blue-600 hover:underline">Réserver</button>' : 
+                            ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        // Logique de filtrage (Recherche)
+        function filterPlaces() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allPlaces.filter(p => 
+                p.id.toLowerCase().includes(searchTerm)
+            );
+            renderPlaces(filtered);
+        }
+
+        function reserve(id) {
+            alert("Place " + id + " réservée avec succès !");
+        }
+
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'bg-blue-50', 'scale-105');
+                btn.classList.add('text-gray-500');
+            });
+            btnElement.classList.add('text-blue-600', 'bg-blue-50', 'scale-105');
+            btnElement.classList.remove('text-gray-500');
+            lucide.createIcons();
+        }
+
+        // Affichage initial
+        renderPlaces(allPlaces);
+    </script>
+</body>
+</html>
