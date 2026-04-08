@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartParking - Statistiques</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #f8fafc; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .app-shell { max-width: 450px; margin: 0 auto; width: 100%; flex: 1; background: white; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.05); overflow: hidden; }
+        .stat-card-gradient { background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%); }
+    </style>
+</head>
+<body>
+
+    <header class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-5 shrink-0 shadow-lg w-full">
+        <div class="max-w-[450px] mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-2xl shadow-inner">🚗</div>
+                <div>
+                    <h1 class="font-bold text-xl tracking-tight">SmartParking</h1>
+                    <p class="text-xs text-blue-100 opacity-80">Mes Statistiques</p>
+                </div>
+            </div>
+            <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="app-shell">
+        <main class="flex-1 overflow-y-auto px-6 py-6 bg-gray-50 pb-24">
+            <h2 class="text-2xl font-black text-gray-800 mb-6">Mes Statistiques</h2>
+
+            <div class="stat-card-gradient rounded-[2rem] p-8 text-white shadow-xl mb-6 relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 opacity-80 mb-2">
+                        <i data-lucide="car" class="w-4 h-4"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">Places trouvées</span>
+                    </div>
+                    <div class="text-6xl font-black mb-2">128</div>
+                    <div class="flex items-center gap-1 text-indigo-100 text-xs">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-green-300"></i>
+                        <span class="font-medium">+12% par rapport au mois dernier</span>
+                    </div>
+                </div>
+                <div class="absolute -right-4 -bottom-4 opacity-10">
+                    <i data-lucide="bar-chart-3" class="w-32 h-32 text-white"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-100">
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-3">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Temps moyen</p>
+                    <p class="text-xl font-black text-gray-800">3 min</p>
+                </div>
+                <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-100">
+                    <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-3">
+                        <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Occupation</p>
+                    <p class="text-xl font-black text-gray-800">67%</p>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Historique récent</h3>
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-gray-50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-bold">B</div>
+                        <div>
+                            <p class="font-bold text-gray-800">Place B-12</p>
+                            <p class="text-xs text-gray-400">Hier, 14:30</p>
+                        </div>
+                    </div>
+                    <p class="font-bold text-blue-600">2.50 DH</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-gray-50 opacity-70">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-bold">A</div>
+                        <div>
+                            <p class="font-bold text-gray-800">Place A-05</p>
+                            <p class="text-xs text-gray-400">05 Avr, 09:15</p>
+                        </div>
+                    </div>
+                    <p class="font-bold text-blue-600">1.80 DH</p>
+                </div>
+            </div>
+        </main>
+
+        <nav class="bg-white border-t px-2 py-2 shrink-0 absolute bottom-0 left-0 right-0 z-50">
+            <div class="flex justify-around items-center">
+                <a href="dashboard.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-400">
+                    <i data-lucide="search" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Trouver</span>
+                </a>
+                <a href="ma-place.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-400">
+                    <i data-lucide="bookmark" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Ma place</span>
+                </a>
+                <a href="stats.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-blue-600 bg-blue-50 scale-105">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-medium uppercase">Stats</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
