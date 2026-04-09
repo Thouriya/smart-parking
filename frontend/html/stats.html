@@ -37,12 +37,12 @@
                 <div class="relative z-10">
                     <div class="flex items-center gap-2 opacity-80 mb-2">
                         <i data-lucide="car" class="w-4 h-4"></i>
-                        <span class="text-xs font-bold uppercase tracking-wider">Places trouvées</span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Places totales</span>
                     </div>
-                    <div class="text-6xl font-black mb-2">128</div>
+                    <div id="total-places" class="text-6xl font-black mb-2">--</div>
                     <div class="flex items-center gap-1 text-indigo-100 text-xs">
                         <i data-lucide="trending-up" class="w-4 h-4 text-green-300"></i>
-                        <span class="font-medium">+12% par rapport au mois dernier</span>
+                        <span class="font-medium">Données synchronisées</span>
                     </div>
                 </div>
                 <div class="absolute -right-4 -bottom-4 opacity-10">
@@ -55,39 +55,29 @@
                     <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-3">
                         <i data-lucide="clock" class="w-5 h-5"></i>
                     </div>
-                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Temps moyen</p>
-                    <p class="text-xl font-black text-gray-800">3 min</p>
+                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Libres</p>
+                    <p id="count-libre" class="text-xl font-black text-gray-800">--</p>
                 </div>
                 <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-100">
                     <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-3">
                         <i data-lucide="pie-chart" class="w-5 h-5"></i>
                     </div>
                     <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Occupation</p>
-                    <p class="text-xl font-black text-gray-800">67%</p>
+                    <p id="percent-occupation" class="text-xl font-black text-gray-800">--%</p>
                 </div>
             </div>
 
             <h3 class="text-lg font-bold text-gray-800 mb-4">Historique récent</h3>
-            <div class="space-y-3">
+            <div id="history-list" class="space-y-3">
                 <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-gray-50">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-bold">B</div>
                         <div>
                             <p class="font-bold text-gray-800">Place B-12</p>
-                            <p class="text-xs text-gray-400">Hier, 14:30</p>
+                            <p class="text-xs text-gray-400">Dernière activité</p>
                         </div>
                     </div>
-                    <p class="font-bold text-blue-600">2.50 DH</p>
-                </div>
-                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-gray-50 opacity-70">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-bold">A</div>
-                        <div>
-                            <p class="font-bold text-gray-800">Place A-05</p>
-                            <p class="text-xs text-gray-400">05 Avr, 09:15</p>
-                        </div>
-                    </div>
-                    <p class="font-bold text-blue-600">1.80 DH</p>
+                    <p class="font-bold text-blue-600">En cours</p>
                 </div>
             </div>
         </main>
@@ -102,6 +92,10 @@
                     <i data-lucide="bookmark" class="w-6 h-6"></i>
                     <span class="text-[10px] font-medium uppercase">Ma place</span>
                 </a>
+                <a href="ma-carte.html" class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-gray-400">
+                    <i data-lucide="credit-card" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-tighter">Ma Carte</span>
+                </a>
                 <a href="stats.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-blue-600 bg-blue-50 scale-105">
                     <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
                     <span class="text-[10px] font-medium uppercase">Stats</span>
@@ -110,6 +104,41 @@
         </nav>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        // Initialisation des icônes
+        lucide.createIcons();
+
+        // Fonction pour récupérer les stats réelles du Backend
+        async function fetchStats() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/stats');
+                const data = await response.json();
+
+                // On calcule les chiffres
+                let total = 0;
+                let libre = 0;
+                let occupe = 0;
+
+                data.forEach(item => {
+                    total += item.count;
+                    if (item.status.toLowerCase() === 'libre') libre = item.count;
+                    if (item.status.toLowerCase() === 'occupée') occupe = item.count;
+                });
+
+                const occupationPercent = total > 0 ? Math.round((occupe / total) * 100) : 0;
+
+                // Mise à jour de l'affichage
+                document.getElementById('total-places').innerText = total;
+                document.getElementById('count-libre').innerText = libre;
+                document.getElementById('percent-occupation').innerText = occupationPercent + '%';
+
+            } catch (error) {
+                console.error("Erreur lors de la récupération des stats:", error);
+            }
+        }
+
+        // Charger les stats au chargement de la page
+        window.onload = fetchStats;
+    </script>
 </body>
 </html>
