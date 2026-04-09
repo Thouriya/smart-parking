@@ -32,6 +32,15 @@
                     <p class="text-xs text-blue-100 opacity-80">Recherche en temps réel</p>
                 </div>
             </div>
+            <div class="flex items-center gap-4">
+    <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors">
+        <i data-lucide="bell" class="w-5 h-5"></i>
+    </button>
+
+    <button id="logout-btn" class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors" title="Se déconnecter">
+        <i data-lucide="log-out" class="w-5 h-5"></i>
+    </button>
+</div>
             <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <i data-lucide="user" class="w-5 h-5"></i>
             </button>
@@ -97,22 +106,22 @@
 
         // 2. Affichage
         function renderPlaces(list) {
-    const container = document.getElementById('results-list');
-    const noResults = document.getElementById('no-results');
+            const container = document.getElementById('results-list');
+            const noResults = document.getElementById('no-results');
     
-    if (list.length === 0) {
-        container.innerHTML = "";
-        noResults.classList.remove('hidden');
-        return;
-    }
+            if (list.length === 0) {
+                container.innerHTML = "";
+                noResults.classList.remove('hidden');
+                return;
+            }
 
-    noResults.classList.add('hidden');
+            noResults.classList.add('hidden');
 
-    container.innerHTML = list.map(p => {
-        const isLibre = p.status === "libre";
+            container.innerHTML = list.map(p => {
+                const isLibre = p.status === "libre";
 
-        return `
-        <div class="bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center border border-gray-100 hover:border-blue-300 transition-all">
+            return `
+            <div class="bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center border border-gray-100 hover:border-blue-300 transition-all">
             
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center font-bold text-gray-700">
@@ -139,6 +148,7 @@
         `;
     }).join('');
 
+
     lucide.createIcons();
 }
 
@@ -160,6 +170,18 @@
 
         // Charger au démarrage
         window.onload = fetchParkingData;
+
+
+        lucide.createIcons();
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+        
+
+            if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
+                // 3. Redirection immédiate vers la page de connexion
+                window.location.href = 'login.html';
+            }
+        });
     </script>
 </body>
 </html>

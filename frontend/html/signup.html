@@ -131,66 +131,49 @@
     </p>
  
     <script>
+    lucide.createIcons();
+
+    function togglePass(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        icon.setAttribute('data-lucide', input.type === 'password' ? 'eye' : 'eye-off');
         lucide.createIcons();
- 
-        function togglePass(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.setAttribute('data-lucide', 'eye-off');
-            } else {
-                input.type = 'password';
-                icon.setAttribute('data-lucide', 'eye');
-            }
-            lucide.createIcons();
+    }
+
+    document.getElementById('signup-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Validation simple
+        if (password !== confirmPassword) {
+            alert("Les mots de passe ne correspondent pas");
+            return;
         }
- 
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let isValid = true;
- 
-            const fields = ['name', 'email', 'phone', 'password', 'confirmPassword'];
-            fields.forEach(f => {
-                const val = document.getElementById(f).value;
-                const err = document.getElementById('error-' + f);
-                const input = document.getElementById(f);
-                
-                if (!val) {
-                    err.style.display = 'block';
-                    input.classList.add('border-red-500');
-                    isValid = false;
-                } else {
-                    err.style.display = 'none';
-                    input.classList.remove('border-red-500');
-                }
+
+        try {
+            // ENVOI AU BACKEND
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
             });
- 
-            if (isValid && document.getElementById('password').value !== document.getElementById('confirmPassword').value) {
-                document.getElementById('error-confirmPassword').innerText = "Les mots de passe ne correspondent pas";
-                document.getElementById('error-confirmPassword').style.display = 'block';
-                isValid = false;
-            }
- 
-            if (!document.getElementById('terms').checked) {
-                document.getElementById('error-terms').style.display = 'block';
-                isValid = false;
-            }
- 
-            if (isValid) {
+
+            const result = await response.json();
+
+            if (response.ok) {
                 alert("Compte créé avec succès !");
-                window.location.href = 'dashboard.html';
+                window.location.href = 'login.html';
+            } else {
+                alert("Erreur : " + result.message);
             }
-        });
- 
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', () => {
-                const errorId = 'error-' + input.id;
-                if(document.getElementById(errorId)) {
-                    document.getElementById(errorId).style.display = 'none';
-                    input.classList.remove('border-red-500');
-                }
-            });
+        } catch (error) {
+            console.error("Erreur connexion:", error);
+            alert("Impossible de contacter le serveur. Lancez app.py !");
+            }
         });
     </script>
 </body>

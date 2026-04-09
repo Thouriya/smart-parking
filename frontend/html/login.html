@@ -3,96 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="log.css">
     <title>SmartParking - Connexion</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
         }
- 
+
+        /* Animation d'entrée */
         .animate-slide-up {
-            animation: slideUp 0.6s ease-out;
+            animation: slideUp 0.6s ease-out forwards;
         }
- 
+
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
- 
+
+        /* Effet au focus sur les icônes */
         .input-group:focus-within i {
             color: #2563eb;
+        }
+
+        /* Style du bouton au clic */
+        button:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 flex items-center justify-center p-4">
     
-    <div class="w-full max-w-[400px] animate-slide-up">
- 
-        <div class="bg-white rounded-[2.5rem] p-8 shadow-2xl">
- 
-            <!-- Logo et titre à l'intérieur de la carte -->
-            <div class="text-center mb-8">
-                <div class="w-20 h-20 bg-blue-600 rounded-[2rem] shadow-lg flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="car" class="w-10 h-10 text-white"></i>
-                </div>
-                <h1 class="text-2xl font-extrabold text-blue-600 tracking-tight">SmartParking</h1>
-                <p class="text-gray-400 text-sm mt-1">Votre stationnement intelligent</p>
+    <div class="w-full max-w-[400px] bg-white rounded-[2.5rem] p-8 shadow-2xl animate-slide-up">
+
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-blue-600 rounded-[2rem] shadow-lg flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="car" class="w-10 h-10 text-white"></i>
             </div>
- 
-            <!-- Séparateur -->
-            <div class="border-t border-gray-100 pt-6 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Connexion</h2>
-                <p class="text-gray-400 text-sm">Heureux de vous revoir !</p>
-            </div>
- 
-            <form onsubmit="event.preventDefault(); window.location.href='dashboard.html'" class="space-y-5">
-                
-                <div class="space-y-1.5 input-group">
-                    <label class="text-xs font-semibold text-gray-500 ml-1 uppercase tracking-wider">Adresse Email</label>
-                    <div class="relative">
-                        <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 transition-colors"></i>
-                        <input type="email" required placeholder="nom@exemple.com" 
-                            class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-gray-700">
-                    </div>
-                </div>
- 
-                <div class="space-y-1.5 input-group">
-                    <div class="flex justify-between items-center px-1">
-                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Mot de passe</label>
-                        <a href="#" class="text-xs text-blue-600 font-medium">Oublié ?</a>
-                    </div>
-                    <div class="relative">
-                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 transition-colors"></i>
-                        <input type="password" required placeholder="••••••••" 
-                            class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-gray-700">
-                    </div>
-                </div>
- 
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 group">
-                    <span>Se connecter</span>
-                    <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
-                </button>
-            </form>
- 
-            <div class="mt-8 text-center">
-                <p class="text-sm text-gray-500">
-                    Nouveau ici ? 
-                    <a href="signup.html" class="text-blue-600 font-bold hover:underline ml-1">Créer un compte</a>
-                </p>
-            </div>
+            <h1 class="text-2xl font-extrabold text-blue-600 tracking-tight">SmartParking</h1>
+            <p class="text-gray-400 text-sm mt-1">Votre stationnement intelligent</p>
         </div>
- 
-        <p class="text-center text-white/60 text-xs mt-8">
-            &copy; 2026 SmartParking Inc. Tous droits réservés.
-        </p>
-    </div>
- 
+
+        <div class="border-t border-gray-100 pt-6 mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Connexion</h2>
+            <p class="text-gray-400 text-sm">Heureux de vous revoir !</p>
+        </div>
+
+        <form id="login-form" class="space-y-5">
+            
+            <div class="space-y-1.5 input-group">
+                <label class="text-xs font-semibold text-gray-500 ml-1 uppercase tracking-wider">Adresse Email</label>
+                <div class="relative">
+                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 transition-colors"></i>
+                    <input type="email" id="email" required placeholder="nom@exemple.com" 
+                        class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-gray-700">
+                </div>
+            </div>
+
+            <div class="space-y-1.5 input-group">
+                <div class="flex justify-between items-center px-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Mot de passe</label>
+                    <a href="#" class="text-xs text-blue-600 font-medium hover:underline">Oublié ?</a>
+                </div>
+                <div class="relative">
+                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 transition-colors"></i>
+                    <input type="password" id="password" required placeholder="••••••••" 
+                        class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-gray-700">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 group">
+                <span>Se connecter</span>
+                <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </form>
+
+        <div class="mt-8 text-center">
+            <p class="text-sm text-gray-500">
+                Nouveau ici ? 
+                <a href="signup.html" class="text-blue-600 font-bold hover:underline ml-1">Créer un compte</a>
+            </p>
+        </div>
+
+    </div> <p class="text-center text-white/60 text-xs mt-8 absolute bottom-4 w-full">
+        &copy; 2026 SmartParking Inc. Tous droits réservés.
+    </p>
+
     <script>
+        // Initialisation des icônes Lucide
         lucide.createIcons();
+
+        // Gestion de la soumission du formulaire
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Appel à l'API Flask (app.py)
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Connexion réussie -> Redirection vers le dashboard
+                    window.location.href = data.redirect || 'dashboard.html';
+                } else {
+                    // Erreur affichée en cas de mauvais identifiants
+                    alert(data.message || "Identifiants incorrects");
+                }
+            } catch (error) {
+                console.error("Erreur de connexion au serveur :", error);
+                alert("Impossible de joindre le serveur. Vérifiez que app.py est lancé.");
+            }
+        });
     </script>
 </body>
 </html>

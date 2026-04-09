@@ -23,9 +23,15 @@
                     <p class="text-xs text-blue-100 opacity-80">Mes Statistiques</p>
                 </div>
             </div>
-            <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <i data-lucide="user" class="w-5 h-5"></i>
-            </button>
+            
+            <div class="flex gap-2">
+                <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                </button>
+                <button id="logout-btn" class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center hover:bg-red-500/40 transition-colors" title="Déconnexion">
+                    <i data-lucide="log-out" class="w-5 h-5 text-white"></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -83,38 +89,43 @@
         </main>
 
         <nav class="bg-white border-t px-2 py-2 shrink-0 absolute bottom-0 left-0 right-0 z-50">
-            <div class="flex justify-around items-center">
-                <a href="dashboard.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-400">
-                    <i data-lucide="search" class="w-6 h-6"></i>
-                    <span class="text-[10px] font-medium uppercase">Trouver</span>
+            <div class="flex justify-around items-center max-w-[450px] mx-auto">
+                <a href="dashboard.html" class="flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-gray-400">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                    <span class="text-[9px] uppercase font-bold">Trouver</span>
                 </a>
-                <a href="ma-place.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-gray-400">
-                    <i data-lucide="bookmark" class="w-6 h-6"></i>
-                    <span class="text-[10px] font-medium uppercase">Ma place</span>
+                <a href="ma-place.html" class="flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-gray-400">
+                    <i data-lucide="bookmark" class="w-5 h-5"></i>
+                    <span class="text-[9px] uppercase font-bold">Ma place</span>
                 </a>
-                <a href="ma-carte.html" class="flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-gray-400">
-                    <i data-lucide="credit-card" class="w-6 h-6"></i>
-                    <span class="text-[9px] font-bold uppercase tracking-tighter">Ma Carte</span>
+                <a href="ma-carte.html" class="flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-gray-400">
+                    <i data-lucide="credit-card" class="w-5 h-5"></i>
+                    <span class="text-[9px] uppercase font-bold">Carte</span>
                 </a>
-                <a href="stats.html" class="flex flex-col items-center gap-1 px-5 py-2 rounded-xl text-blue-600 bg-blue-50 scale-105">
-                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
-                    <span class="text-[10px] font-medium uppercase">Stats</span>
+                <a href="stats.html" class="flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-blue-600 bg-blue-50 scale-105">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    <span class="text-[9px] uppercase font-bold">Stats</span>
                 </a>
             </div>
         </nav>
     </div>
 
     <script>
-        // Initialisation des icônes
         lucide.createIcons();
 
-        // Fonction pour récupérer les stats réelles du Backend
+        // Gestion de la déconnexion
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Fonction pour récupérer les stats réelles
         async function fetchStats() {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/stats');
                 const data = await response.json();
 
-                // On calcule les chiffres
                 let total = 0;
                 let libre = 0;
                 let occupe = 0;
@@ -127,7 +138,6 @@
 
                 const occupationPercent = total > 0 ? Math.round((occupe / total) * 100) : 0;
 
-                // Mise à jour de l'affichage
                 document.getElementById('total-places').innerText = total;
                 document.getElementById('count-libre').innerText = libre;
                 document.getElementById('percent-occupation').innerText = occupationPercent + '%';
@@ -137,7 +147,6 @@
             }
         }
 
-        // Charger les stats au chargement de la page
         window.onload = fetchStats;
     </script>
 </body>

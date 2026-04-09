@@ -30,9 +30,21 @@
         <div class="max-w-[450px] mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-2xl">🚗</div>
-                <div><h1 class="font-bold text-xl">SmartParking</h1><p class="text-xs text-blue-100 opacity-80">Mon Portefeuille</p></div>
+                <div>
+                    <h1 class="font-bold text-xl">SmartParking</h1>
+                    <p class="text-xs text-blue-100 opacity-80">Mon Portefeuille</p>
+                </div>
+                </div>
+        
+            <div class="flex gap-2">
+                <button class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                </button>
+            
+                <button id="logout-btn" class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center hover:bg-red-500/40 transition-colors" title="Déconnexion">
+                    <i data-lucide="log-out" class="w-5 h-5 text-white"></i>
+                </button>
             </div>
-            <button class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><i data-lucide="plus" class="w-5 h-5"></i></button>
         </div>
     </header>
 
@@ -89,6 +101,19 @@
             </div>
         </nav>
     </div>
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+        
+
+        // 2. Message de confirmation (Optionnel)
+            if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
+                // 3. Redirection immédiate vers la page de connexion
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 </html>
