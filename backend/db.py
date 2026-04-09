@@ -5,5 +5,6 @@ def get_connection():
         host="localhost",
         user="root",
         password="",
+        port=3307,
         database="smart_parking"
     )
